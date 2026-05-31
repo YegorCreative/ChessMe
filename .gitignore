@@ -1,0 +1,35 @@
+// .gitignore file content
+
+# Xcode
+DerivedData/
+build/
+*.xccheckout
+*.xcscmblueprint
+xcuserdata/
+
+# Swift Package Manager
+/.build/
+/Packages/
+.swiftpm/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Archives
+*.xcarchive
+
+# User settings
+*.swp
+*.swm
+*.swo
+*.orig
+.DS_Store
