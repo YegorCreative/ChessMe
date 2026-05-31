@@ -1,11 +1,20 @@
 import Foundation
 
-enum ChessPieceColor: String, CaseIterable, Codable {
+enum ChessPieceColor: String, CaseIterable, Codable, Hashable {
     case white
     case black
+
+    var nextTurn: ChessPieceColor {
+        switch self {
+        case .white:
+            return .black
+        case .black:
+            return .white
+        }
+    }
 }
 
-enum ChessPieceType: String, CaseIterable, Codable {
+enum ChessPieceType: String, CaseIterable, Codable, Hashable {
     case king
     case queen
     case rook
@@ -14,7 +23,7 @@ enum ChessPieceType: String, CaseIterable, Codable {
     case pawn
 }
 
-struct ChessPiece: Identifiable, Equatable, Codable {
+struct ChessPiece: Identifiable, Equatable, Codable, Hashable {
     let id: UUID
     let type: ChessPieceType
     let color: ChessPieceColor

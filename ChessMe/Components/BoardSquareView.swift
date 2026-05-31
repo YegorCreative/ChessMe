@@ -16,11 +16,33 @@ struct BoardSquareView: View {
     }
 
     let tone: SquareTone
+    let pieceSymbol: String?
+      let isSelected: Bool
+
+      init(tone: SquareTone, pieceSymbol: String? = nil, isSelected: Bool = false) {
+        self.tone = tone
+        self.pieceSymbol = pieceSymbol
+        self.isSelected = isSelected
+    }
 
     var body: some View {
         Rectangle()
             .fill(tone.color)
             .aspectRatio(1, contentMode: .fit)
+            .overlay {
+            if isSelected {
+              RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(Color.accentColor, lineWidth: 3)
+                .padding(4)
+            }
+          }
+          .overlay {
+                if let pieceSymbol {
+                    Text(pieceSymbol)
+                        .font(.system(size: 28))
+                        .foregroundStyle(.primary)
+                }
+            }
             .accessibilityHidden(true)
     }
 }

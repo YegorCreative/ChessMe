@@ -7,11 +7,19 @@ struct ChessBoardView: View {
     }
 
     let orientation: Orientation
+    let displaySquares: [BoardSquareDisplayModel]
+    let onSquareTap: (ChessPosition) -> Void
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 8)
 
-    init(orientation: Orientation = .whiteAtBottom) {
+    init(
+        orientation: Orientation = .whiteAtBottom,
+        displaySquares: [BoardSquareDisplayModel] = BoardSquareDisplayModel.emptyBoard(),
+        onSquareTap: @escaping (ChessPosition) -> Void = { _ in }
+    ) {
         self.orientation = orientation
+        self.displaySquares = displaySquares
+        self.onSquareTap = onSquareTap
     }
 
     var body: some View {
@@ -31,9 +39,15 @@ struct ChessBoardView: View {
                     }
 
                     LazyVGrid(columns: columns, spacing: 0) {
-                        ForEach(0..<8, id: \.self) { rank in
-                            ForEach(0..<8, id: \.self) { file in
-                                BoardSquareView(tone: squareTone(file: file, rank: rank))
+                        ForEach(orderedDisplaySquares) { square in
+                            BoardSquareView(
+                                tone: square.isLightSquare ? .light : .dark,
+                                pieceSymbol: square.pieceSymbol,
+                                isSelected: square.isSelected
+                            )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                onSquareTap(square.position)
                             }
                         }
                     }
@@ -83,6 +97,26 @@ struct ChessBoardView: View {
         }
     }
 
+    private var orderedDisplaySquares: [BoardSquareDisplayModel] {
+        let sortedRanks: [Int]
+        let sortedFiles: [Int]
+
+        switch orientation {
+        case .whiteAtBottom:
+            sortedRanks = Array((0..<ChessPosition.boardDimension).reversed())
+            sortedFiles = Array(0..<ChessPosition.boardDimension)
+        case .blackAtBottom:
+            sortedRanks = Array(0..<ChessPosition.boardDimension)
+            sortedFiles = Array((0..<ChessPosition.boardDimension).reversed())
+        }
+
+        return sortedRanks.flatMap { rank in
+            sortedFiles.compactMap { file in
+                displaySquares.first { $0.file == file && $0.rank == rank }
+            }
+        }
+    }
+
     private func coordinateLabel(_ text: String) -> some View {
         Text(text)
             .font(.caption2.weight(.medium))
@@ -90,9 +124,6 @@ struct ChessBoardView: View {
             .textCase(.lowercase)
     }
 
-    private func squareTone(file: Int, rank: Int) -> BoardSquareView.SquareTone {
-        (file + rank).isMultiple(of: 2) ? .light : .dark
-    }
 }
 
 #Preview("Chess Board") {

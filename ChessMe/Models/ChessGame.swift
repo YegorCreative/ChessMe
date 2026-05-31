@@ -1,17 +1,14 @@
 import Foundation
 
 struct ChessGame {
-    var pieces: [ChessPiece]
-    var selectedPosition: ChessPosition?
+    var boardState: ChessBoardState
     var currentTurn: ChessPieceColor
 
     init(
-        pieces: [ChessPiece] = [],
-        selectedPosition: ChessPosition? = nil,
+        boardState: ChessBoardState = .standardSetup(),
         currentTurn: ChessPieceColor = .white
     ) {
-        self.pieces = pieces
-        self.selectedPosition = selectedPosition
+        self.boardState = boardState
         self.currentTurn = currentTurn
     }
 }

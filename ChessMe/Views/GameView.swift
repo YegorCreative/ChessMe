@@ -1,14 +1,22 @@
 import SwiftUI
 
 struct GameView: View {
+    @StateObject private var viewModel = GameViewModel()
+
     var body: some View {
         VStack(spacing: 16) {
+            Text(viewModel.currentTurnText)
+                .font(.headline)
+
             Text("Chess board coming next.")
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
 
-            ChessBoardView()
+            ChessBoardView(
+                displaySquares: viewModel.displaySquares,
+                onSquareTap: viewModel.toggleSelection(at:)
+            )
                 .frame(maxWidth: 420)
 
             Spacer(minLength: 0)
