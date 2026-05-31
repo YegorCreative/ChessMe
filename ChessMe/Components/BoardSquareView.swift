@@ -17,9 +17,9 @@ struct BoardSquareView: View {
 
     let tone: SquareTone
     let pieceSymbol: String?
-      let isSelected: Bool
+    let isSelected: Bool
 
-      init(tone: SquareTone, pieceSymbol: String? = nil, isSelected: Bool = false) {
+    init(tone: SquareTone, pieceSymbol: String? = nil, isSelected: Bool = false) {
         self.tone = tone
         self.pieceSymbol = pieceSymbol
         self.isSelected = isSelected
@@ -30,17 +30,22 @@ struct BoardSquareView: View {
             .fill(tone.color)
             .aspectRatio(1, contentMode: .fit)
             .overlay {
-            if isSelected {
-              RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .stroke(Color.accentColor, lineWidth: 3)
-                .padding(4)
+                if isSelected {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .stroke(Color.accentColor.opacity(0.95), lineWidth: 3)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color.accentColor.opacity(0.10))
+                        )
+                        .padding(4)
+                }
             }
-          }
-          .overlay {
+            .overlay {
                 if let pieceSymbol {
                     Text(pieceSymbol)
-                        .font(.system(size: 28))
+                        .font(.system(size: 30, weight: .medium, design: .default))
                         .foregroundStyle(.primary)
+                        .shadow(color: Color.black.opacity(0.08), radius: 1, x: 0, y: 1)
                 }
             }
             .accessibilityHidden(true)
@@ -50,8 +55,8 @@ struct BoardSquareView: View {
 #Preview("Board Squares") {
     VStack(spacing: 0) {
         HStack(spacing: 0) {
-            BoardSquareView(tone: .light)
-            BoardSquareView(tone: .dark)
+            BoardSquareView(tone: .light, pieceSymbol: "♔", isSelected: true)
+            BoardSquareView(tone: .dark, pieceSymbol: "♛")
         }
         HStack(spacing: 0) {
             BoardSquareView(tone: .dark)

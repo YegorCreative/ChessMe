@@ -45,8 +45,29 @@ final class GameViewModel: ObservableObject {
             return
         }
 
-        if selectedPiece.type == .pawn {
+        switch selectedPiece.type {
+        case .pawn:
             guard rulesService.isLegalPawnMove(for: selectedPiece, from: source, to: destination, on: boardState) else {
+                return
+            }
+        case .knight:
+            guard rulesService.isLegalKnightMove(for: selectedPiece, from: source, to: destination, on: boardState) else {
+                return
+            }
+        case .bishop:
+            guard rulesService.isLegalBishopMove(for: selectedPiece, from: source, to: destination, on: boardState) else {
+                return
+            }
+        case .rook:
+            guard rulesService.isLegalRookMove(for: selectedPiece, from: source, to: destination, on: boardState) else {
+                return
+            }
+        case .queen:
+            guard rulesService.isLegalQueenMove(for: selectedPiece, from: source, to: destination, on: boardState) else {
+                return
+            }
+        case .king:
+            guard rulesService.isLegalKingMove(for: selectedPiece, from: source, to: destination, on: boardState) else {
                 return
             }
         }

@@ -25,7 +25,7 @@ struct ChessBoardView: View {
     var body: some View {
         GeometryReader { geometry in
             let availableSize = min(geometry.size.width, geometry.size.height)
-            let coordinateSize = min(max(availableSize * 0.06, 18), 24)
+            let coordinateSize = min(max(availableSize * 0.065, 18), 24)
             let boardSize = max(availableSize - coordinateSize, 0)
             let squareSize = boardSize / 8
 
@@ -52,9 +52,9 @@ struct ChessBoardView: View {
                         }
                     }
                     .frame(width: boardSize, height: boardSize)
-                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                     .overlay {
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
                             .stroke(Color.black.opacity(0.08), lineWidth: 1)
                     }
                 }
@@ -72,7 +72,23 @@ struct ChessBoardView: View {
                     .frame(width: boardSize)
                 }
             }
-            .frame(width: boardSize + coordinateSize, height: boardSize + coordinateSize)
+            .padding(6)
+            .background(
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.white.opacity(0.92), Color.white.opacity(0.78)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .stroke(Color.black.opacity(0.05), lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.06), radius: 12, x: 0, y: 8)
+            .frame(width: boardSize + coordinateSize + 12, height: boardSize + coordinateSize + 12)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .accessibilityLabel("Chess board with coordinates")
         }
@@ -119,11 +135,10 @@ struct ChessBoardView: View {
 
     private func coordinateLabel(_ text: String) -> some View {
         Text(text)
-            .font(.caption2.weight(.medium))
-            .foregroundStyle(.secondary)
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(.secondary.opacity(0.85))
             .textCase(.lowercase)
     }
-
 }
 
 #Preview("Chess Board") {
